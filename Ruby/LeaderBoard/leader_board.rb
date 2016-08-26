@@ -6,9 +6,8 @@ class LeaderBoard
   def driver_points
     driver_points = {}
     @races.each do |race|
-      race.results.each do |driver|
-        name = race.driver_name(driver)
-        driver_points[name] = driver_points.fetch(name, 0) + race.points(driver) 
+      race.results.each do |driver_name, points|
+        driver_points[driver_name] = driver_points.fetch(driver_name, 0) + points
       end
     end
 
@@ -26,47 +25,35 @@ class Driver
   def initialize(name, country)
     @name = name
     @country = country
+    post_initialize
+  end
+
+  def post_initialize
   end
 end
 
 class SelfDrivingCar < Driver
   attr_accessor :algorithm_version
-  def initialize(algorithm_version, company)
-    super
-    @algorithm_version = algorithm_version
-    @company = company
+  def post_initialize
+    @algorithm_version = @name
+    @company = country
+  end
+
+  def name
+    "Self Driving Car - " + country + " (" + algorithm_version + ")"
   end
 end
 
+
 class Race
   @@points = [25, 18, 15]
+  attr_reader :results
 
   def initialize(name, drivers)
     @name = name
-    @results = drivers
-    @driver_names = {}
-    @results.each do |driver|
-      driver_name = driver.name
-      if driver.class == SelfDrivingCar
-        driver_name = "Self Driving Car - " + driver.country + " (" + driver.algorithm_version + ")";
-      end
-      @driver_names[driver] = driver_name
+    @results = {}
+    drivers.each_with_index do |driver, index|
+      @results[driver.name] = @@points[index]
     end
   end
-
-  def position(driver)
-    @results.index driver
-  end
-
-  def points(driver)
-    @@points[position(driver)]
-  end
-
-  def results
-    @results
-  end
-
-  def driver_name(driver)
-    @driver_names[driver]
-  end    
 end
