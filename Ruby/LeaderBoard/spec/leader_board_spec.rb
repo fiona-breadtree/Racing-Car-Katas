@@ -40,11 +40,11 @@ describe 'LeaderBoard' do
   let(:driver_4_name) { 'driver_4' }
   let(:driver_5_name) { 'self_driver_1.2' }
 
-  let(:race_1) { double('Race', results: { driver_1_name => 25, driver_5_name => 18, driver_4_name => 15 })}
-  let(:race_2) { double('Race', results: { driver_5_name => 25, driver_2_name => 18, driver_3_name => 15 })}
-  let(:race_3) { double('Race', results: { driver_4_name => 25, driver_3_name => 18, driver_2_name => 15 })}
+  let(:results_1) { { driver_1_name => 25, driver_5_name => 18, driver_4_name => 15 } }
+  let(:results_2) { { driver_5_name => 25, driver_2_name => 18, driver_3_name => 15 } }
+  let(:results_3) { { driver_4_name => 25, driver_3_name => 18, driver_2_name => 15 } }
 
-  let(:leader_board) { LeaderBoard.new([race_1, race_2, race_3]) }
+  let(:leader_board) { LeaderBoard.new([results_1, results_2, results_3]) }
 
   context "#winner" do
     it "returns the driver with the most points" do

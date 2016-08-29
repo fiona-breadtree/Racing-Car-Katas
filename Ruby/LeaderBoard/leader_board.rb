@@ -1,22 +1,22 @@
 class LeaderBoard
-  def initialize(races)
-    @races = races
-  end
-
-  def driver_points
-    driver_points = {}
-    @races.each do |race|
-      race.results.each do |driver_name, points|
-        driver_points[driver_name] = driver_points.fetch(driver_name, 0) + points
-      end
-    end
-
-    return driver_points
+  attr_reader :driver_points
+  def initialize(race_results)
+    @driver_points = build_drivers_points(race_results)
   end
 
   def driver_rankings
     rankings = driver_points.sort_by{|name, points| points}.reverse
     return rankings.collect{|name, points| name}
+  end
+
+  private
+
+  def build_drivers_points(race_results)
+    driver_points = {}
+    race_results.each do |race_result|
+      driver_points.merge!(race_result) { |driver_name, old_val, new_val| old_val + new_val }
+    end
+    return driver_points
   end
 end
 
@@ -46,14 +46,14 @@ end
 
 
 class Race
-  @@points = [25, 18, 15]
   attr_reader :results
 
   def initialize(name, drivers)
     @name = name
     @results = {}
+    @points = [25, 18, 15]
     drivers.each_with_index do |driver, index|
-      @results[driver.name] = @@points[index]
+      @results[driver.name] = @points[index]
     end
   end
 end
