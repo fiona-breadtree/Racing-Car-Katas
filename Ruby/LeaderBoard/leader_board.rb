@@ -40,20 +40,20 @@ class SelfDrivingCar < Driver
   end
 
   def name
-    "Self Driving Car - " + country + " (" + algorithm_version + ")"
+    "Self Driving Car - #{country} (#{algorithm_version})"
   end
 end
 
 
 class Race
   attr_reader :results
-
+  POINTS = [25, 18, 15]
+  
   def initialize(name, drivers)
     @name = name
     @results = {}
-    @points = [25, 18, 15]
     drivers.each_with_index do |driver, index|
-      @results[driver.name] = @points[index]
+      @results[driver.name] = Race::POINTS[index]
     end
   end
 end
